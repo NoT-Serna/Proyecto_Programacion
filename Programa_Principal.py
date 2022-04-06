@@ -1,4 +1,4 @@
-import golazos , timer , faltas
+import goles , timer , faltas
 
 
 menu="""
@@ -32,11 +32,11 @@ elif opcion == "3":
 elif opcion == "4":
     equipo=input("Que equipo hizo el gol?: ")
     if equipo=="visitante":
-        golazos.gol2()
+        goles.gol2()
     elif equipo=="local":
-        golazos.gol1()
+        goles.gol1()
     
 #numeral 5
 elif opcion == "5":
-    print("marcador final:","local",golazos.gol1(),":","visitante",golazos.gol2())
+    print("marcador final:","local",goles.gol1(),":","visitante",goles.gol2())
     print("")
