@@ -1,14 +1,16 @@
 import time
 
-def countdown(num_of_mins):
-    while num_of_mins:
-        m, s = divmod(num_of_mins, 60)
-        min_sec_format = '{:02d}:{:02d}'.format(m, s)
-        print(min_sec_format, end='/r')
-        time.sleep(1)
+def iniciar(num_of_mins):
+    while num_of_mins: 
+        mins, secs = divmod(num_of_mins,60) 
+        timer = '{:02d}:{:02d}'.format(mins, secs) 
+        print(timer, end="\r") # pone eso y sobreescribe
+        print(" ")
+        time.sleep(1) #retrasa la ejecucion del bucle en un segundo
         num_of_mins -= 1
         
-    print('Countdown finished.')
+    print('Tiempo de partido finalizado.')
 
-inp = input('Ingrese el numero de minutos de juego: ')
-countdown(inp)
+inp =int( input('Ingrese el numero de minutos de juego: '))
+inp=inp*60
+iniciar(inp)
