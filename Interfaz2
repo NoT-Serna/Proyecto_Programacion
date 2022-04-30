@@ -1,19 +1,67 @@
 import tkinter as tk
-import time #para hacer el timer
+from tkinter import messagebox as mb
 
-class goles():
+#problema: timer no lo haremos, mi¿incremento de goles, para todo a tkinter
+#falta mostrar que pasa cuando pones uina falta y que sancion se aplica
+#falta mostrar los resultados finales cuando se oprime el boton finalizar partido
+#falta mostrar el marcador parcial cuando se pone un gol
+#falta hacer el diseño de la interfaz
+#falta guardar los datos en un archivo
+#comentar todo el codigo
+
+class Marcador():
+    def __init__(self,goles_local,goles_visitante):
+        self.root = tk.Tk(className='Marcador parcial')
+        self.root.geometry('200x200')
+        self.labelA = tk.Label(self.root, text="Marcador parcial:")
+        self.labelB=tk.Label(self.root,text="Local")
+        self.labelC=tk.Label(self.root,text=goles_local)
+        self.labelD=tk.Label(self.root,text="Visitante")
+        self.labelE=tk.Label(self.root,text=goles_visitante)
+        self.button1 = tk.Button(self.root,
+                           text = 'Siguiente',
+                           command=lambda:[self.root.destroy(),#gol_visitante(),gol_local()
+                                           ])
+           
+        self.labelA.pack()
+        self.labelB.pack()
+        self.labelC.pack()
+        self.labelD.pack()
+        self.labelE.pack()
+        self.button1.pack()
+
+        self.root.mainloop()
+       
+        """
+        def gol_local(goles_local):
+                goles_local=Goles()#haciendo instancia de la otra clase y obteniendo el metodo de esta para ir sumandole
+                goles_local.gol_local()
+                return goles_local
+       
+        def gol_visitante(goles_visitante): #goles_local y goles_visitante reciben valores Booleanos(True or False)
+                goles_visitante+=1
+       """
+ 
+
+
+
+class Goles():
     def __init__(self):
         self.root = tk.Tk(className='Gol')
         self.root.geometry('200x100')
         self.labelA = tk.Label(self.root, text="¿Que equipo anoto?")
-        
+       
+        self.goles_local=0
+        self.goles_visitante=0
+
+       
         self.button1 = tk.Button(self.root,
                            text = 'Local',
-                           command=lambda:[self.root.destroy(),self.gol1()
+                           command=lambda:[self.root.destroy(),self.gol_local()
                                            ])
         self.button2 = tk.Button(self.root,
                            text = 'Visitante',
-                           command=lambda:[self.root.destroy(),self.gol2()
+                           command=lambda:[self.root.destroy(),self.gol_visitante()
                                            ])
 
         self.labelA.pack()
@@ -21,21 +69,23 @@ class goles():
         self.button2.pack()
 
         self.root.mainloop()
-        
-    def gol1(self):
-        gol_local = 0
-        gol_local+=1
-        return gol_local
-            
-    def gol2(self):
-        gol_visitante = 0
-        gol_visitante+=1                
-        return gol_visitante
+       
+    def gol_local(self): #goles_local y goles_visitante reciben valores Booleanos(True or False)
+            self.goles_local+=1
+            marcador=Marcador(self.goles_local,self.goles_visitante)
+            marcador.gol_local()
+            return marcador, self.goles_local
+        #instanciar la otra clase donde esta el otro metodo que necesito mostrar en la ventana
     
-    def x():
-        self.labelB = tk.Label(self.root, text="Marcador parcial:")
-        
-    def marcador_parcial(self, gol_local,gol_visitante):
+
+  
+    def gol_visitante(self): #goles_local y goles_visitante reciben valores Booleanos(True or False)
+            self.goles_visitante+=1
+            marcador=Marcador(self.goles_local,self.goles_visitante)
+            return marcador
+
+       
+    def marcador_parcial(self, gol_local,gol_visitante,text):
         actualText = self.display.get()
         textLength = len(actualText)
         if actualText == "0":
@@ -43,52 +93,68 @@ class goles():
         else:
             self.display.insert(textLength, text)
 
-        
+       
                  
-        
-    
+       
+   
 
-class faltas():
+class Faltas:#ventana donde se ingresan las faltas
     def __init__(self):
-        self.root = tk.Tk(className='Falta')
-        self.root.geometry('200x100')
-        self.labelA = tk.Label(self.root, text="1.Ingresar el nombre del jugador")
-        self.labelB = tk.Label(self.root, text="2.Ingrese el nombre de la falta")        
+        self.root = tk.Tk(className='Falta')#titulo de la ventana
+        self.root.geometry('300x300')#tamaño de la ventana
+        self.labelA = tk.Label(self.root, text="1.Ingresar el numero del jersey del jugador")#mensaje de texto para ingresar el numero del jugador
+        self.labelB = tk.Label(self.root, text="2.Ingrese el nombre de la falta")#mensaje de texto para ingresar el nombre de la falta
         
-        self.entry_1 = tk.StringVar()
-        self.entry_2 = tk.StringVar()
-        self.entry_widget_1 = tk.Entry(self.root, textvariable=self.entry_1)
-        self.entry_widget_2 = tk.Entry(self.root, textvariable=self.entry_2)
-        
+        self.entry_1 = tk.StringVar(self.root)#declara el tipo de dato que se va a ingresar en entry_widget1
+        self.entry_2 = tk.StringVar(self.root)#declara el tipo de dato que se va a ingresar en entry_widget2
+        self.entry_widget_1 = tk.Entry(self.root, textvariable=self.entry_1)#crea la caja de texto para ingresar el numero del jersey
+        self.entry_widget_2 = tk.Entry(self.root, textvariable=self.entry_2)#crea la caja de texto para ingresar el nombre de la falta
+      
         self.button1 = tk.Button(self.root,
                            text = 'Listo',
-                           command=lambda:[self.root.destroy()  # funciones
-                                           ])
+                           command=lambda:[self.decision(self.entry_1.get(), self.entry_2.get()),self.root.destroy()  # funciones
+                                           ])#boton que servira para mostrar que se hara con el jugador que hizo
+                                            #la falta, con la funcion decision que recibe como parametros lo
+                                            #que se entro en las cajas de texto
 
-        self.labelA.pack()
-        self.entry_widget_1.pack()
-        self.labelB.pack()
-        self.entry_widget_2.pack()
-        self.button1.pack()
+        self.labelA.pack()#se muestra el mensaje de textoA
+        self.entry_widget_1.pack()#se muestra la caja de texto1
+        self.labelB.pack()#se muestra el mensaje de textoB
+        self.entry_widget_2.pack()#se muestra el mensaje de textoB
+        self.button1.pack()#muestra el boton 
 
-        self.root.mainloop()
+        self.root.mainloop()#permite cerrar la ventana
+       
+    def decision(self, numero_jugador, nombre_falta):#recibe como parametros los elementos escritos en el entry_widget1 y entry_widget2
+        falta_menor=["intento ataque", "broken stick", "charging", "boarding", "cross checking", "delaying", "elbowing", " falling on the puck","handpass", "high sticks", "holding", "hoocking","interference","slashing","tripping" ]
+        falta_mayor=["fighting","interference by spectators", "checking from behind", 'leaving penalty bench', "abuse of officials", "profane language", ]
+        if nombre_falta in falta_menor:#si la falta escrita esta en falta menor 
+            mb.showerror("Penalizacion","El jugador penalizado debe permanecer durante 2 minutos en el penalty box")#muestra un mensaje que diga que se debe hacer con el jugador
+        elif nombre_falta in falta_mayor:#si la falta escrita esta en falta menor 
+            mb.showerror("Penalizacion","El jugador penalizado debe permanecer durante 10 minutos en el penalty box")#muestra un mensaje que diga que se debe hacer con el jugador
+        elif nombre_falta not in falta_menor or nombre_falta not in falta_mayor:
+            mb.showerror("Penalizacion","la falta no existe o esta escrita de forma incorrecta")
+
         
-    def decision(self):
 
-            #aqui va lo de si el jugador lleva mas de unas faltas pasa algo
-        return 
-            
+    def misconduct(self):
+        
     
+    
+    
+
+
+
 
 class Mensaje2():
     def __init__(self):
         self.root = tk.Tk(className='¿Que desea hacer?')
-        self.root.geometry('2000x1000')
+        self.root.geometry('500x400')
         self.labelA = tk.Label(self.root, text="1.Ingresar una falta")
         self.labelB = tk.Label(self.root, text="2.Ingresar una anotacion")
         self.labelC = tk.Label(self.root, text="3.Finalizar el partido")
-        
-        
+       
+       
         self.button1 = tk.Button(self.root,
                            text = 'Oprima aqui.',
                            command=lambda:[self.falta()#funciones
@@ -99,9 +165,9 @@ class Mensaje2():
                                            ])
         self.button3 = tk.Button(self.root,
                            text = 'Oprima aqui.',
-                           command=lambda:[#funciones
+                           command=lambda:[self.finalizar()#funciones
                                            ])
-        
+       
 
         self.labelA.pack()
         self.button1.pack()
@@ -111,20 +177,24 @@ class Mensaje2():
         self.button3.pack()
 
         self.root.mainloop()
-        
+       
     def falta(self):
-        menu_falta=faltas()
+        menu_falta=Faltas()
         return menu_falta
     def gol(self):
-        menu_gol=goles()
+        menu_gol=Goles()
         return menu_gol
+   
+   # def finalizar(self):
+       # self.root.destroy()
+       
 
-    
+   
 
 class Mensaje1():
    def __init__(self):
        self.root = tk.Tk(className='Orden del juego')
-       self.root.geometry('2000x1000')
+       self.root.geometry('400x300')
 
        self.labelA = tk.Label(self.root, text="Ingrese el nombre del equipo local:")
        self.labelB = tk.Label(self.root, text="Ingrese el nombre del equipo visitante:")
@@ -133,7 +203,7 @@ class Mensaje1():
        
        self.button = tk.Button(self.root,
                           text = 'Siguiente',
-                          command=lambda:[self.local(), self.visitante(), self.cambio()])
+                          command=lambda:[self.nombres, self.cambio()])
        
        self.entry_1 = tk.StringVar()
        self.entry_2 = tk.StringVar()
@@ -152,13 +222,12 @@ class Mensaje1():
 
        self.root.mainloop()
 
-   def local(self):
-       local=self.entry_widget_1["text"]  # hagamos que envie lo de la entrada1 a un archivo
-       return local
+   def nombres(self):
+       local=self.entry_1.get()
+       visitante=self.entry_1.get() #asigna lo que escribe en la entrada a una variable  
+       return local,visitante
 
-   def visitante(self):
-       visitante=self.entry_widget_2["text"]  # hagamos que envie lo de la entrada2 a un archivo o variable
-       return visitante
+
    
    def cambio(self):
        #hacer el timer
@@ -167,6 +236,6 @@ class Mensaje1():
        return menu
        
        
-    
+   
        
 app = Mensaje1()
