@@ -2,13 +2,6 @@ import tkinter as tk
 from tkinter import messagebox as mb
 import Partido as part
 
-#falta mostrar los resultados finales cuando se oprime el boton finalizar partido
-#hacer lo de los archivos para imprimirlo al final, falta guardar los datos en un archivo
-#falta hacer el diseño de la interfaz
-#falta boton de deshacer goles o faltas
-#falta mostrar los nombres de los equipos en el marcador
-#comentar todo el codigo
-
 partido=part.Partido()#crea un objeto de la clase Partido del modulo Partido para ser usado dentro de todo el recorrido del programa
 
 class Final:
